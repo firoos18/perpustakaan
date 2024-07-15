@@ -6,7 +6,7 @@ const path = require("path");
 const mongoURI = process.env.DB_URI;
 
 const storage = new GridFsStorage({
-  url: mongoURI + process.env.DB_NAME,
+  url: mongoURI,
   options: { useNewUrlParser: true, useUnifiedTopology: true },
   file: (req, file) => {
     return {
@@ -26,8 +26,6 @@ const upload = multer({
     cb(null, true);
   },
 });
-
-console.log(upload);
 
 module.exports = {
   upload: upload.single("file"),
