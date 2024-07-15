@@ -2,7 +2,6 @@ const multer = require("multer");
 const { GridFsStorage } = require("multer-gridfs-storage");
 require("dotenv").config();
 const path = require("path");
-const sharp = require("sharp");
 
 const mongoURI = process.env.DB_URI;
 
