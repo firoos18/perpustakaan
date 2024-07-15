@@ -1,6 +1,7 @@
 const createError = require("http-errors");
 const Buku = require("../models/Buku.model");
 const { getGfs } = require("../helpers/init_mongodb");
+const { addBukuSchema } = require("../helpers/validation_schema");
 
 async function getAllBuku(req, res, next) {
   try {
@@ -69,15 +70,10 @@ async function getBukuById(req, res, next) {
 
 async function uploadBuku(req, res, next) {
   try {
-    const newBuku = new Buku({
-      judul: req.body.judul,
-      pengarang: req.body.pengarang,
-      sinopsis: req.body.sinopsis,
-      status: req.body.status,
-      imageId: req.file ? req.file.id : null,
-    });
+    const result = await addBukuSchema.validateAsync(req.body);
 
-    const savedBuku = await newBuku.save();
+    const newBuku = new Buku(result);
+    await newBuku.save();
 
     const imageUrl = req.file
       ? `${req.protocol}://${req.get("host")}/buku/image/${savedBuku.id}`
